@@ -245,6 +245,7 @@ export class EmacsEmulator implements IEmacsController, vscode.Disposable {
       new CaseCommands.TransformToUppercase(this),
       new CaseCommands.TransformToLowercase(this),
       new CaseCommands.TransformToTitlecase(this),
+      new OtherWindowCommands.StartAcceptingOtherWindowCommand(this),
       new OtherWindowCommands.ScrollOtherWindow(this),
       new OtherWindowCommands.ScrollOtherWindowDown(this),
     ];

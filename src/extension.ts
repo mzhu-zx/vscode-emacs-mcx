@@ -307,6 +307,10 @@ export function activate(context: vscode.ExtensionContext): void {
 
   bindEmulatorCommand("registerNameCommand");
 
+  registerEmulatorCommand("emacs-mcx.startOtherWindowCommand", (emulator, args) => {
+    return emulator.runCommand("startAcceptingOtherWindowCommand", args);
+  });
+
   bindEmulatorCommand("scrollOtherWindow");
 
   bindEmulatorCommand("scrollOtherWindowDown");

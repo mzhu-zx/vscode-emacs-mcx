@@ -46,6 +46,16 @@
     "when": "!terminalFocus"
   },
   {
+    "key": "ctrl+x 5",
+    "command": "emacs-mcx.startOtherWindowCommand",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "2",
+    "command": "workbench.action.newWindow",
+    "when": "emacs-mcx.acceptingOtherWindowCommand && !terminalFocus "
+  },
+  {
     "key": "ctrl+x b",
     "command": "workbench.action.showAllEditorsByMostRecentlyUsed",
     "when": "!terminalFocus"

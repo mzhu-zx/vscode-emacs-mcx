@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import type { TextEditor } from "vscode";
-import { EmacsCommand } from ".";
+import { EmacsCommand, ITextEditorInterruptionHandler } from ".";
 
 abstract class CommandInOtherWindow extends EmacsCommand {
   abstract runInOtherWindow(textEditor: vscode.TextEditor): void;
@@ -94,5 +94,36 @@ export class ScrollOtherWindowDown extends CommandInOtherWindow {
         return selection;
       }
     });
+  }
+}
+
+/**
+ * This command is assigned to `C-x 5` and sets `emacs-mcx.acceptingOtherWindowCommand` context
+ * with `{ "when": "emacs-mcx.acceptingOtherWindowCommand" }` condition.
+ */
+export class StartAcceptingOtherWindowCommand extends EmacsCommand implements ITextEditorInterruptionHandler {
+  public readonly id = "startAcceptingOtherWindowCommand";
+  override isIntermediateCommand = true;
+
+  private AcceptingOtherWindowCommand = false;
+
+  private startAcceptingOtherWindowCommand(): void {
+    this.AcceptingOtherWindowCommand = true;
+    vscode.commands.executeCommand("setContext", "emacs-mcx.acceptingOtherWindowCommand", true);
+  }
+
+  private stopAcceptingOtherWindowCommand(): void {
+    this.AcceptingOtherWindowCommand = false;
+    vscode.commands.executeCommand("setContext", "emacs-mcx.acceptingOtherWindowCommand", false);
+  }
+
+  public run(): void {
+    this.startAcceptingOtherWindowCommand();
+  }
+
+  public onDidInterruptTextEditor(): void {
+    if (this.AcceptingOtherWindowCommand) {
+      this.stopAcceptingOtherWindowCommand();
+    }
   }
 }
